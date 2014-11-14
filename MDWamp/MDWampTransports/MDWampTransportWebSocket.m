@@ -34,7 +34,7 @@ NSString *const kMDWampProtocolWamp2msgpack = @"wamp.2.msgpack";
 
 @implementation MDWampTransportWebSocket 
 
-- (id)initWithServer:(NSURL *)request protocolVersions:(NSArray *)protocols
+- (id)initWithServer:(NSURL *)url protocolVersions:(NSArray *)protocols
 {
     self = [super init];
     if (self) {
@@ -43,7 +43,22 @@ NSString *const kMDWampProtocolWamp2msgpack = @"wamp.2.msgpack";
         NSAssert(([protocols containsObject:kMDWampProtocolWamp2json]
                   ||[protocols containsObject:kMDWampProtocolWamp2msgpack]), @"No valid WAMP protocol found");
         
-        self.socket = [[SRWebSocket alloc] initWithURL:request protocols:protocols];
+        self.socket = [[SRWebSocket alloc] initWithURL:url protocols:protocols];
+        [_socket setDelegate:self];
+    }
+    return self;
+}
+
+- (id)initWithServerRequest:(NSURLRequest *)request protocolVersions:(NSArray *)protocols
+{
+    self = [super init];
+    if (self) {
+        NSAssert([protocols count] > 0, @"Specify a valid WAMP protocol");
+        
+        NSAssert(([protocols containsObject:kMDWampProtocolWamp2json]
+                  ||[protocols containsObject:kMDWampProtocolWamp2msgpack]), @"No valid WAMP protocol found");
+        
+        self.socket = [[SRWebSocket alloc] initWithURLRequest:request protocols:protocols];
         [_socket setDelegate:self];
     }
     return self;

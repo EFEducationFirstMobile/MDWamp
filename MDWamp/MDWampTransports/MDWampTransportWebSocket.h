@@ -32,10 +32,21 @@ FOUNDATION_EXPORT NSString *const kMDWampProtocolWamp2msgpack;
  *  By restricting the array of protocol versions we force to use a given protocol
  *  they are in the form of wamp, wamp.2.json, wamp.2.msgpack
  *
+ *  @param url   url representing a server
+ *
+ *  @return intsance of the transport
+ */
+- (id)initWithServer:(NSURL *)url protocolVersions:(NSArray *)protocols;
+
+/**
+ *  initializer
+ *  By restricting the array of protocol versions we force to use a given protocol
+ *  they are in the form of wamp, wamp.2.json, wamp.2.msgpack
+ *
  *  @param request   request representing a server
  *
  *  @return intsance of the transport
  */
-- (id)initWithServer:(NSURL *)request protocolVersions:(NSArray *)protocols;
+- (id)initWithServerRequest:(NSURLRequest *)request protocolVersions:(NSArray *)protocols;
 
 @end
