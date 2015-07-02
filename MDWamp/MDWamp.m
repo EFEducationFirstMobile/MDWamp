@@ -97,7 +97,7 @@ NSString * const kMDWampRoleCallee      = @"callee";
 #pragma mark Utils
 - (NSNumber *) generateID
 {
-    unsigned int r = abs(arc4random_uniform(exp2(32)-1));
+    unsigned int r = ABS(arc4random_uniform(exp2(32)-1));
     return [NSNumber numberWithInt:r];
 }
 
