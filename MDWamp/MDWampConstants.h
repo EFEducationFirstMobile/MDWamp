@@ -10,13 +10,6 @@
 #import "NSMutableArray+MDStack.h"
 #import "NSString+MDString.h"
 
-// Debug Boilerplate
-#ifdef DEBUG
-#define MDWampDebugLog(fmt, ...) NSLog((@"%s " fmt), __PRETTY_FUNCTION__, ##__VA_ARGS__);
-#else
-#define MDWampDebugLog(fmt, ...)
-#endif
-
 // Serialization Classes
 FOUNDATION_EXPORT NSString *const kMDWampSerializationMsgpack;
 FOUNDATION_EXPORT NSString *const kMDWampSerializationJSON;

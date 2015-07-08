@@ -84,6 +84,10 @@ NSString *const kMDWampProtocolWamp2msgpack = @"wamp.2.msgpack";
     [_socket send:data];
 }
 
+- (void)sendHeartbeat:(NSData *)data
+{
+	[_socket sendPing:data];
+}
 
 #pragma mark SRWebSocket Delegate
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message
@@ -91,9 +95,13 @@ NSString *const kMDWampProtocolWamp2msgpack = @"wamp.2.msgpack";
     [self.delegate transportDidReceiveMessage:message];
 }
 
+- (void)webSocket:(SRWebSocket *)webSocket didReceivePong:(NSData *)pongPayload
+{
+	[self.heartbeatDelegate transportDidReceivedHeartbeatMessage:pongPayload];
+}
+
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket
 {
-    MDWampDebugLog(@"negotiated protocol is %@", webSocket.protocol);
     NSArray *splittedProtocol = [webSocket.protocol componentsSeparatedByString:@"."];
     if ([splittedProtocol count] == 1) {
         [self.delegate transportDidOpenWithSerialization:kMDWampSerializationJSON];
@@ -120,6 +128,5 @@ NSString *const kMDWampProtocolWamp2msgpack = @"wamp.2.msgpack";
     NSError *error = [NSError errorWithDomain:kMDWampErrorDomain code:code userInfo:@{NSLocalizedDescriptionKey: reason ? reason : @""}];
      [self.delegate transportDidCloseWithError:error];
 }
-
 
 @end

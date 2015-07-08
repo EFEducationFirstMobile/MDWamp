@@ -24,8 +24,13 @@
 FOUNDATION_EXPORT NSString *const kMDWampProtocolWamp2json;
 FOUNDATION_EXPORT NSString *const kMDWampProtocolWamp2msgpack;
 
+@protocol MDWampTransportWebSocketHeartbeatDelegate <NSObject>
+- (void)transportDidReceivedHeartbeatMessage:(NSData *)message;
+@end
+
 @interface MDWampTransportWebSocket : NSObject <MDWampTransport>
 @property id<MDWampTransportDelegate>delegate;
+@property id<MDWampTransportWebSocketHeartbeatDelegate>heartbeatDelegate;
 
 /**
  *  Default initializer
@@ -48,5 +53,7 @@ FOUNDATION_EXPORT NSString *const kMDWampProtocolWamp2msgpack;
  *  @return intsance of the transport
  */
 - (id)initWithServerRequest:(NSURLRequest *)request protocolVersions:(NSArray *)protocols;
+
+- (void)sendHeartbeat:(NSData *)data;
 
 @end

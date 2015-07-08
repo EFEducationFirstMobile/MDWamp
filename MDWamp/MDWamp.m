@@ -146,9 +146,7 @@ NSString * const kMDWampRoleCallee      = @"callee";
 #pragma mark MDWampTransport Delegate
 
 - (void)transportDidOpenWithSerialization:(NSString*)serialization
-{
-    MDWampDebugLog(@"websocket connection opened");
-    
+{    
     _serialization = serialization;
     
     // Init the serializator
@@ -170,8 +168,6 @@ NSString * const kMDWampRoleCallee      = @"callee";
     if (!unpacked || [unpacked count] < 1) {
 #ifdef DEBUG
         [NSException raise:@"it.mogui.mdwamp" format:@"Wrong message recived"];
-#else
-        MDWampDebugLog(@"Invalid message code received !!");
 #endif
     }
     id<MDWampMessage> msg;
@@ -181,8 +177,6 @@ NSString * const kMDWampRoleCallee      = @"callee";
     @catch (NSException *exception) {
 #ifdef DEBUG
         [exception raise];
-#else 
-        MDWampDebugLog(@"Invalid message code received !!");
 #endif
     }
     
@@ -190,7 +184,6 @@ NSString * const kMDWampRoleCallee      = @"callee";
 }
 
 - (void)transportDidFailWithError:(NSError *)error {
-    MDWampDebugLog(@"DID FAIL reason %@", error.localizedDescription);
     if (self.onSessionClosed) {
         self.onSessionClosed(self, error.code, error.localizedDescription, error.userInfo);
     }
@@ -201,7 +194,6 @@ NSString * const kMDWampRoleCallee      = @"callee";
 }
 
 - (void)transportDidCloseWithError:(NSError *)error {
-    MDWampDebugLog(@"DID CLOSE reason %@", error.localizedDescription);
     _sessionId = nil;
     [self cleanUp];
  
@@ -336,7 +328,6 @@ NSString * const kMDWampRoleCallee      = @"callee";
         } else if ([errorType isEqual:kMDWampRegister]) {
             NSArray *registrationRequest = [self.rpcRegisterRequests objectForKey:error.request];
             if (!registrationRequest) {
-                MDWampDebugLog(@"registration not present ignore");
                 return;
             }
             
@@ -349,7 +340,6 @@ NSString * const kMDWampRoleCallee      = @"callee";
         } else if ([errorType isEqual:kMDWampUnregister]) {
             NSArray *unregistrationRequest = [self.rpcUnregisterRequests objectForKey:error.request];
             if (!unregistrationRequest) {
-                MDWampDebugLog(@"request not present ignoring");
                 return;
             }
             
@@ -433,7 +423,6 @@ NSString * const kMDWampRoleCallee      = @"callee";
         
         NSArray *registrationRequest = self.rpcRegisterRequests[registered.request];
         if (!registrationRequest) {
-            MDWampDebugLog(@"request is not present, ignoring it");
             return;
         }
         
@@ -505,7 +494,6 @@ NSString * const kMDWampRoleCallee      = @"callee";
 
 - (void) sendMessage:(id<MDWampMessage>)message
 {
-    MDWampDebugLog(@"Sending %@", message);
     if ([message isKindOfClass:[MDWampGoodbye class]]) {
         self.goodbyeSent = YES;
     }
