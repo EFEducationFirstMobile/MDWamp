@@ -97,7 +97,7 @@ NSString *const kMDWampProtocolWamp2msgpack = @"wamp.2.msgpack";
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceivePong:(NSData *)pongPayload
 {
-	[self.heartbeatDelegate transportDidReceivedHeartbeatMessage:pongPayload];
+	[self.heartbeatDelegate transportDidReceiveHeartbeatMessage:pongPayload];
 }
 
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket
