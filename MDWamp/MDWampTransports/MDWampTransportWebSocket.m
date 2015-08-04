@@ -64,28 +64,34 @@ NSString *const kMDWampProtocolWamp2msgpack = @"wamp.2.msgpack";
     return self;
 }
 
-- (void) open
+- (void)open
 {
     [_socket open];
 }
 
-- (void) close
+- (void)close
 {
     [_socket close];
 }
 
-- (BOOL) isConnected
+- (BOOL)isConnected
 {
     return (_socket!=nil)? _socket.readyState == SR_OPEN : NO;
 }
 
 - (void)send:(id)data
 {
+    if(![self isConnected]) {
+        return;
+    }
     [_socket send:data];
 }
 
 - (void)sendHeartbeat:(NSData *)data
 {
+    if(![self isConnected]) {
+        return;
+    }
 	[_socket sendPing:data];
 }
 
