@@ -93,7 +93,7 @@ NSString *const kMDWampProtocolWamp2msgpack = @"wamp.2.msgpack";
     if(![self isConnected]) {
         return;
     }
-	[_socket sendPing:data];
+    [_socket sendPing:data error:nil];
 }
 
 #pragma mark SRWebSocket Delegate
