@@ -77,8 +77,6 @@ NSString * const kMDWampAuthMethodTicket      = @"ticket";
         // if wampcra MUST be provided authid
 #ifdef DEBUG
         [NSException raise:@"it.mogui.mdwamp" format:@"Inconsistent MDWampClientConfig with wampcra an authid and sharedSecred must be provided"];
-#else
-        MDWampDebugLog(@"Inconsistent MDWampClientConfig with wampcra an authid must be provided");
 #endif
     }
     
@@ -86,8 +84,6 @@ NSString * const kMDWampAuthMethodTicket      = @"ticket";
         // if wampcra MUST be provided authid
 #ifdef DEBUG
         [NSException raise:@"it.mogui.mdwamp" format:@"Inconsistent MDWampClientConfig with ticket based auth an authid and ticket must be provided"];
-#else
-        MDWampDebugLog(@"Inconsistent MDWampClientConfig with ticket based auth an authid and ticket must be provided");
 #endif
     }
     
