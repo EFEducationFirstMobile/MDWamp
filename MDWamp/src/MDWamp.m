@@ -144,10 +144,6 @@
     if (self.onSessionClosed) {
         self.onSessionClosed(self, MDWampConnectionClosed, @"MDWamp.session.explicit_closed", nil);
     }
-        
-    if (self.onSessionClosed) {
-        self.onSessionClosed(self, MDWampConnectionClosed, @"MDWamp.session.explicit_closed", nil);
-    }
     
     if (_delegate) {
         if (_delegate && [_delegate respondsToSelector:@selector(mdwamp:closedSession:reason:details:)]) {

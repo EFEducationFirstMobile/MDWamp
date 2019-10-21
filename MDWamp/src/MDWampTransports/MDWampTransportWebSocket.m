@@ -31,6 +31,7 @@ NSString *const kMDWampProtocolWamp2msgpack = @"wamp.2.msgpack";
 @property (nonatomic, strong) SRWebSocket *socket;
 @property (nonatomic, strong) NSArray *protocols;
 @property (nonatomic, strong) NSURL *request;
+
 @end
 
 @implementation MDWampTransportWebSocket 
@@ -43,42 +44,48 @@ NSString *const kMDWampProtocolWamp2msgpack = @"wamp.2.msgpack";
         
         NSAssert(([protocols containsObject:kMDWampProtocolWamp2json]
                   ||[protocols containsObject:kMDWampProtocolWamp2msgpack]), @"No valid WAMP protocol found");
-        self.request = request;
-        self.protocols = protocols;
         
+        _request = request;
+        _protocols = protocols;
+        _socket = [[SRWebSocket alloc] initWithURL:_request protocols:_protocols];
+        [_socket setDelegate:self];
     }
+    
     return self;
 }
 
-- (void)setRequestCookies:(NSArray *)requestCookies {
+- (void)setRequestCookies:(NSArray *)requestCookies
+{
     self.socket.requestCookies = requestCookies;
 }
 
-- (void) open
+- (void)open
 {
-    self.socket = [[SRWebSocket alloc] initWithURL:_request protocols:_protocols];
-    [_socket setDelegate:self];
-    [_socket open];
+    [self.socket open];
 }
 
 - (void) close
 {
-    [_socket close];
+    [self.socket close];
     self.socket = nil;
 }
 
 - (BOOL) isConnected
 {
-    return (_socket!=nil)? _socket.readyState == SR_OPEN : NO;
+    return (self.socket != nil ? (self.socket.readyState == SR_OPEN) : NO);
 }
 
 - (void)send:(NSData *)data
 {
-    [_socket send:data];
+    if(![self isConnected]) {
+        return;
+    }
+    
+    [self.socket send:data];
 }
 
-
 #pragma mark SRWebSocket Delegate
+
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message
 {
     [self.delegate transportDidReceiveMessage:message];
